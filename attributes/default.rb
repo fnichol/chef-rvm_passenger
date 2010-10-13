@@ -6,10 +6,12 @@
 # Author:: Joshua Timberman (<joshua@opscode.com>)
 # Author:: Joshua Sierles (<joshua@37signals.com>)
 # Author:: Michael Hale (<mikehale@gmail.com>)
+# Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 #
 # Copyright:: 2009, Opscode, Inc
 # Copyright:: 2009, 37signals
 # Coprighty:: 2009, Michael Hale
+# Copyright:: 2010, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +25,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-default[:passenger_enterprise][:version]     = "2.2.15"
-default[:passenger_enterprise][:root_path]   = "/opt/ruby-enterprise/lib/ruby/gems/1.8/gems/passenger-#{passenger_enterprise[:version]}"
+default[:passenger_enterprise][:version]     = "3.0.0.pre4"
+default[:passenger_enterprise][:root_path]   = "/usr/local/rvm/gems/ree-1.8.7-2010.02/gems/passenger-#{passenger_enterprise[:version]}"
 default[:passenger_enterprise][:module_path] = "#{passenger_enterprise[:root_path]}/ext/apache2/mod_passenger.so"

@@ -9,7 +9,7 @@ recipe "passenger_enterprise", "Installs Passenger gem with Ruby Enterprise Edit
 recipe "passenger_enterprise::apache2", "Enables Apache module configuration for passenger under Ruby Enterprise Edition"
 recipe "passenger_enterprise::nginx", "Installs Passenger gem w/ REE, and recompiles support into Nginx"
 
-%w{ ruby_enterprise nginx apache2 }.each do |cb|
+%w{ rvm nginx apache2 }.each do |cb|
   depends cb
 end
 

@@ -23,7 +23,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe "ruby_enterprise"
+include_recipe "rvm"
 
 package "libcurl4-openssl-dev" do
   action :install
