@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: passenger_enterprise
-# Based on passenger_apache2, adapted for nginx too.
+# Cookbook Name:: rvm_passenger
+# Based on passenger_enterprise
 # Recipe:: default
 #
 # Author:: Joshua Timberman (<joshua@opscode.com>)
@@ -10,6 +10,7 @@
 # Copyright:: 2009, Opscode, Inc
 # Copyright:: 2009, 37signals
 # Coprighty:: 2009, Michael Hale
+# Copyright:: 2010, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +30,8 @@ package "libcurl4-openssl-dev" do
   action :install
 end
 
-ree_gem "passenger" do
-  version node[:passenger_enterprise][:version]
+rvm_gem "passenger" do
+  ruby node[:rvm_passenger][:rvm_ruby]
+  version node[:rvm_passenger][:version]
 end
+

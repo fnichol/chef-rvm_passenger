@@ -1,5 +1,6 @@
 #
-# Cookbook Name:: passenger_enterprise
+# Cookbook Name:: rvm_passenger
+# Based on passenger_enterprise
 # Recipe:: nginx
 #
 # Author:: Joshua Timberman (<joshua@opscode.com>)
@@ -9,6 +10,7 @@
 # Copyright:: 2009, Opscode, Inc
 # Copyright:: 2009, 37signals
 # Coprighty:: 2009, Michael Hale
+# Copyright:: 2010, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +25,7 @@
 # limitations under the License.
 
 include_recipe "nginx::source"
-include_recipe "passenger_enterprise"
+include_recipe "rvm_passenger"
 
 configure_flags = node[:nginx][:configure_flags].join(" ")
 nginx_install = node[:nginx][:install_path]
@@ -32,12 +34,14 @@ nginx_dir = node[:nginx][:dir]
 
 execute "passenger_nginx_module" do
   command %Q{
-    #{node[:ruby_enterprise][:install_path]}/bin/passenger-install-nginx-module \
-      --auto --prefix=#{nginx_install} \
-      --nginx-source-dir=/tmp/nginx-#{nginx_version} \
-      --extra-configure-flags='#{configure_flags}'
+    source /etc/profile.d/rvm.sh && \
+      rvm #{node[:rvm_passenger][:rvm_ruby]} exec \
+        passenger-install-nginx-module \
+          --auto --prefix=#{nginx_install} \
+          --nginx-source-dir=/tmp/nginx-#{nginx_version} \
+          --extra-configure-flags='#{configure_flags}'
   }
-  not_if "#{nginx_install}/sbin/nginx -V 2>&1 | grep '#{node[:ruby_enterprise][:gems_dir]}/gems/passenger-#{node[:passenger_enterprise][:version]}/ext/nginx'"
+  not_if %{#{nginx_install}/sbin/nginx -V 2>&1 | grep "#{node[:rvm_passenger][:root_path]}/ext/nginx"}
   notifies :restart, resources(:service => "nginx")
 end
 

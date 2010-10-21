@@ -1,7 +1,7 @@
 #
-# Cookbook Name:: passenger_enterprise
-# Based on passenger_apache2
-# attributes:: passenger_enterprise
+# Cookbook Name:: rvm_passenger
+# Based on passenger_enterprise
+# attributes:: rvm_passenger
 #
 # Author:: Joshua Timberman (<joshua@opscode.com>)
 # Author:: Joshua Sierles (<joshua@37signals.com>)
@@ -25,6 +25,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-default[:passenger_enterprise][:version]     = "3.0.0.pre4"
-default[:passenger_enterprise][:root_path]   = "/usr/local/rvm/gems/ree-1.8.7-2010.02/gems/passenger-#{passenger_enterprise[:version]}"
-default[:passenger_enterprise][:module_path] = "#{passenger_enterprise[:root_path]}/ext/apache2/mod_passenger.so"
+default[:rvm_passenger][:version]     = "3.0.0"
+default[:rvm_passenger][:rvm_ruby]    = "ree-1.8.7-2010.02"
+default[:rvm_passenger][:root_path]   = "/usr/local/rvm/gems/#{rvm_passenger[:rvm_ruby]}/gems/passenger-#{rvm_passenger[:version]}"
+default[:rvm_passenger][:module_path] = "#{rvm_passenger[:root_path]}/ext/apache2/mod_passenger.so"

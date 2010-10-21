@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: passenger_enterprise
-# Based on passenger_apache2
+# Cookbook Name:: rvm_passenger
+# Based on passenger_enterprise
 # Recipe:: apache2
 #
 # Author:: Joshua Timberman (<joshua@opscode.com>)
@@ -10,6 +10,7 @@
 # Copyright:: 2009, Opscode, Inc
 # Copyright:: 2009, 37signals
 # Coprighty:: 2009, Michael Hale
+# Copyright:: 2010, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +24,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe "passenger_enterprise"
+include_recipe "rvm_passenger"
 include_recipe "apache2"
 
 %w{ apache2-threaded-dev libapr1-dev libaprutil1-dev }.each do |pkg|
@@ -34,7 +35,7 @@ end
 
 execute "passenger_apache2_module" do
   command "#{node[:ruby_enterprise][:install_path]}/bin/passenger-install-apache2-module -a"
-  creates node[:passenger_enterprise][:module_path]
+  creates node[:rvm_passenger][:module_path]
 end
 
 template "#{node[:apache][:dir]}/mods-available/passenger.load" do
