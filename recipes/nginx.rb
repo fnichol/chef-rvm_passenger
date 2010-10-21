@@ -34,12 +34,11 @@ nginx_dir = node[:nginx][:dir]
 
 execute "passenger_nginx_module" do
   command %Q{
-    source /etc/profile.d/rvm.sh && \
-      rvm #{node[:rvm_passenger][:rvm_ruby]} exec \
-        passenger-install-nginx-module \
-          --auto --prefix=#{nginx_install} \
-          --nginx-source-dir=/tmp/nginx-#{nginx_version} \
-          --extra-configure-flags='#{configure_flags}'
+    rvm #{node[:rvm_passenger][:rvm_ruby]} exec \
+      passenger-install-nginx-module \
+        --auto --prefix=#{nginx_install} \
+        --nginx-source-dir=/tmp/nginx-#{nginx_version} \
+        --extra-configure-flags='#{configure_flags}'
   }
   not_if %{#{nginx_install}/sbin/nginx -V 2>&1 | grep "#{node[:rvm_passenger][:root_path]}/ext/nginx"}
   notifies :restart, resources(:service => "nginx")
