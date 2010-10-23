@@ -1,2 +1,2 @@
 PassengerRoot <%= node[:rvm_passenger][:root_path] %>
-PassengerRuby <%= node[:ruby_enterprise][:ruby_bin] %>
+PassengerRuby <%= node[:rvm][:root_path] %>/wrappers/<%= node[:rvm_passenger][:rvm_ruby] %>/ruby
