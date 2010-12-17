@@ -25,7 +25,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-default[:rvm_passenger][:version]     = "3.0.1"
+default[:rvm_passenger][:version]     = "3.0.2"
 default[:rvm_passenger][:rvm_ruby]    = "ree-1.8.7-2010.02"
 default[:rvm_passenger][:root_path]   = "/usr/local/rvm/gems/#{rvm_passenger[:rvm_ruby]}/gems/passenger-#{rvm_passenger[:version]}"
 default[:rvm_passenger][:module_path] = "#{rvm_passenger[:root_path]}/ext/apache2/mod_passenger.so"
