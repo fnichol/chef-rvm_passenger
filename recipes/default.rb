@@ -38,6 +38,7 @@ if string_include_gemset?(node[:rvm_passenger][:rvm_ruby])
   end
 end
 
+# install passenger gem
 rvm_gem "passenger" do
   ruby node[:rvm_passenger][:rvm_ruby]
   version node[:rvm_passenger][:version]
