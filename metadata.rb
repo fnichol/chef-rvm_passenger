@@ -20,20 +20,18 @@ end
 attribute "rvm_passenger/version",
   :display_name => "Version of passenger",
   :description => "The version of passenger to deploy. This will be in a format used by the gem command.",
-  :default => "3.0.1"
+  :default => "3.0.2"
 
 attribute "rvm_passenger/rvm_ruby",
   :display_name => "RVM ruby to use",
   :description => "The RVM ruby (and optional gemset) under which to install the passenger gem. This will be in a format used by the rvm command.",
-  :default => "ree-1.8.7-2010.02"
+  :default => "ree-1.8.7@passenger"
 
 attribute "rvm_passenger/root_path",
   :display_name => "Root path to passenger gem",
-  :description => "The full path to the root of the installed passenger gem.",
-  :default => "/usr/local/rvm/gems/ree-1.8.7-2010.02/gems/passenger-3.0.0"
+  :description => "Optionally override the full path to the root of the installed passenger gem."
 
 attribute "rvm_passenger/module_path",
   :display_name => "Path to mod_passenger.so",
-  :description => "The full path to the Apache2 module.",
-  :default => "/usr/local/rvm/gems/ree-1.8.7-2010.02/gems/passenger-3.0.0/ext/apache2/mod_passenger.so"
+  :description => "Optionallly override the full path to the Apache2 module."
 

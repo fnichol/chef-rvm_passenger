@@ -35,3 +35,28 @@ rvm_gem "passenger" do
   version node[:rvm_passenger][:version]
 end
 
+# calculate rvm_passenger/root_path if not set
+ruby_block "calculate rvm_passenger/root_path" do
+  block do
+    rvm_env = RVM::Environment.new
+    rvm_env.use node[:rvm_passenger][:rvm_ruby]
+    gem_home = rvm_env.info.first[1]["homes"]["gem"]
+
+    node.set[:rvm_passenger][:root_path] =
+      "#{gem_home}/gems/passenger-#{node[:rvm_passenger][:version]}"
+  end
+  only_if do
+    node[:rvm_passenger][:root_path].nil?
+  end
+end
+
+ruby_block "calculate rvm_passenger/ruby_wrapper" do
+  block do
+    rvm_env = RVM::Environment.new
+    rvm_env.use node[:rvm_passenger][:rvm_ruby]
+    gem_home = rvm_env.info.first[1]["homes"]["gem"]
+    wrapper_home = gem_home.sub(/\/gems\//, "/wrappers/")
+
+    node.set[:rvm_passenger][:ruby_wrapper] = "#{wrapper_home}/ruby"
+  end
+end

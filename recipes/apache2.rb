@@ -27,6 +27,17 @@
 include_recipe "rvm_passenger"
 include_recipe "apache2"
 
+# set rvm_passenger/module_path if not set
+ruby_block "calculate rvm_passenger/module_path" do
+  block do
+    node.set[:rvm_passenger][:module_path] =
+      "#{node[:rvm_passenger][:root_path]}/ext/apache2/mod_passenger.so"
+  end
+  only_if do
+    node[:rvm_passenger][:module_path].nil?
+  end
+end
+
 %w{ apache2-threaded-dev libapr1-dev libaprutil1-dev }.each do |pkg|
   package pkg do
     action :install
