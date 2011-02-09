@@ -26,8 +26,16 @@
 
 include_recipe "rvm"
 
-package "libcurl4-openssl-dev" do
-  action :install
+package "libcurl4-openssl-dev"
+
+# ensure rvm ruby is installed
+rvm_ruby select_ruby(node[:rvm_passenger][:rvm_ruby])
+
+# ensure gemset exists if given
+if string_include_gemset?(node[:rvm_passenger][:rvm_ruby])
+  rvm_gemset select_gemset(node[:rvm_passenger][:rvm_ruby]) do
+    ruby_string   select_ruby(node[:rvm_passenger][:rvm_ruby])
+  end
 end
 
 rvm_gem "passenger" do
