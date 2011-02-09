@@ -45,7 +45,10 @@ end
 end
 
 execute "passenger_apache2_module" do
-  command "#{node[:ruby_enterprise][:install_path]}/bin/passenger-install-apache2-module -a"
+  command %Q{
+    rvm #{node[:rvm_passenger][:rvm_ruby]} exec \
+      passenger-install-apache2-module -a
+  }
   creates node[:rvm_passenger][:module_path]
 end
 
