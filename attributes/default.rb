@@ -27,4 +27,4 @@
 #
 
 default[:rvm_passenger][:version]     = "3.0.2"
-default[:rvm_passenger][:rvm_ruby]    = "ree-1.8.7@passenger"
+default[:rvm_passenger][:rvm_ruby]    = "ree-1.8.7-2011.01@passenger"
