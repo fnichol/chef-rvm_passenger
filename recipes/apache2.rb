@@ -49,7 +49,9 @@ execute "passenger_apache2_module" do
     rvm #{node[:rvm_passenger][:rvm_ruby]} exec \
       passenger-install-apache2-module -a
   }
-  creates node[:rvm_passenger][:module_path]
+  not_if do
+    File.exists? node[:rvm_passenger][:module_path]
+  end
 end
 
 template "#{node[:apache][:dir]}/mods-available/passenger.load" do
