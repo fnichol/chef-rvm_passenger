@@ -20,12 +20,12 @@ end
 attribute "rvm_passenger/version",
   :display_name => "Version of passenger",
   :description => "The version of passenger to deploy. This will be in a format used by the gem command.",
-  :default => "3.0.2"
+  :default => "3.0.3"
 
 attribute "rvm_passenger/rvm_ruby",
   :display_name => "RVM ruby to use",
   :description => "The RVM ruby (and optional gemset) under which to install the passenger gem. This will be in a format used by the rvm command.",
-  :default => "ree-1.8.7@passenger"
+  :default => "ree-1.8.7-2011.03@passenger"
 
 attribute "rvm_passenger/root_path",
   :display_name => "Root path to passenger gem",
