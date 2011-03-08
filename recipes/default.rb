@@ -40,9 +40,16 @@ ruby_block "calculate rvm_passenger/root_path" do
     rvm_env = RVM::Environment.new
     rvm_env.use node[:rvm_passenger][:rvm_ruby]
     gem_home = rvm_env.info.first[1]["homes"]["gem"]
+    result = "#{gem_home}/gems/passenger-#{node[:rvm_passenger][:version]}"
 
-    node.set[:rvm_passenger][:root_path] =
-      "#{gem_home}/gems/passenger-#{node[:rvm_passenger][:version]}"
+    Chef::Log.debug(%{Calculated value of rvm_passenger/root_path is: "#{result}"})
+    node.set[:rvm_passenger][:root_path] = result
+
+    # NOTE: Warning, vicious hack! A not_if shell block gets interpolated at
+    # compile time and there was no other found way to delay eval until execution
+    # time. Here's a low level way: write a file, then read it out when you
+    # need it. I feel sick to my stomach. Somwhere a kitten is getting clubbed.
+    ::File.open("/tmp/passenger_root_path", 'w') { |f| f.write(result) }
   end
   only_if do
     node[:rvm_passenger][:root_path].nil?
@@ -55,7 +62,9 @@ ruby_block "calculate rvm_passenger/ruby_wrapper" do
     rvm_env.use node[:rvm_passenger][:rvm_ruby]
     gem_home = rvm_env.info.first[1]["homes"]["gem"]
     wrapper_home = gem_home.sub(/\/gems\//, "/wrappers/")
+    result = "#{wrapper_home}/ruby"
 
-    node.set[:rvm_passenger][:ruby_wrapper] = "#{wrapper_home}/ruby"
+    Chef::Log.debug(%{Calculated value of rvm_passenger/ruby_wrapper is: "#{result}"})
+    node.set[:rvm_passenger][:ruby_wrapper] = result
   end
 end
