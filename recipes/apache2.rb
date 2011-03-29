@@ -38,7 +38,12 @@ ruby_block "calculate rvm_passenger/module_path" do
   end
 end
 
-%w{ apache2-threaded-dev libapr1-dev libaprutil1-dev }.each do |pkg|
+if platform?("suse")
+  apache_dev_pkgs = %w{ apache2-devel libapr1-devel libapr-util1-devel }
+else
+  apache_dev_pkgs = %w{ apache2-threaded-dev libapr1-dev libaprutil1-dev }
+end
+apache_dev_pkgs.each do |pkg|
   package pkg do
     action :install
   end

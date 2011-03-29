@@ -26,7 +26,11 @@
 
 include_recipe "rvm"
 
-package "libcurl4-openssl-dev"
+if platform?("suse")
+  package "libcurl-devel"
+else
+  package "libcurl4-openssl-dev"
+end
 
 # install passenger gem
 rvm_gem "passenger" do
