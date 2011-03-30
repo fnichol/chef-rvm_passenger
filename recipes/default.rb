@@ -71,4 +71,7 @@ ruby_block "calculate rvm_passenger/ruby_wrapper" do
     Chef::Log.debug(%{Calculated value of rvm_passenger/ruby_wrapper is: "#{result}"})
     node.set[:rvm_passenger][:ruby_wrapper] = result
   end
+  only_if do
+    node[:rvm_passenger][:ruby_wrapper].nil?
+  end
 end
