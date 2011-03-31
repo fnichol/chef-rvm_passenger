@@ -49,14 +49,10 @@ apache_dev_pkgs.each do |pkg|
   end
 end
 
-execute "passenger_apache2_module" do
-  command %Q{
-    rvm #{node[:rvm_passenger][:rvm_ruby]} exec \
-      passenger-install-apache2-module -a
-  }
-  not_if do
-    File.exists? node[:rvm_passenger][:module_path]
-  end
+rvm_shell "passenger_apache2_module" do
+  ruby_string   node[:rvm_passenger][:rvm_ruby]
+  code          %{passenger-install-apache2-module -a}
+  not_if        { ::File.exists? node[:rvm_passenger][:module_path] }
 end
 
 template "#{node[:apache][:dir]}/mods-available/passenger.load" do
