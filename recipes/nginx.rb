@@ -41,6 +41,7 @@ end
 bash "extract_nginx_source" do
   cwd archive_cache
   code "tar zxf nginx-#{nginx_version}.tar.gz"
+  not_if "test -d #{archive_cache}/nginx-#{nginx_version}"
 end
 
 rvm_shell "build passenger_nginx_module" do
