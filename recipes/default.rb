@@ -32,6 +32,8 @@ else
   package "libcurl4-openssl-dev"
 end
 
+rvm_environment node[:rvm_passenger][:rvm_ruby]
+
 # install passenger gem
 rvm_gem "passenger" do
   ruby_string node[:rvm_passenger][:rvm_ruby]
