@@ -33,6 +33,8 @@ nginx_version = node[:nginx][:version]
 nginx_dir = node[:nginx][:dir]
 archive_cache = node[:nginx][:archive_cache]
 
+rvm_environment node[:rvm_passenger][:rvm_ruby]
+
 rvm_shell "build passenger_nginx_module" do
   ruby_string   node[:rvm_passenger][:rvm_ruby]
   code          <<-INSTALL
