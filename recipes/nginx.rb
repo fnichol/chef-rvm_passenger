@@ -28,10 +28,21 @@ include_recipe "nginx::source"
 include_recipe "rvm_passenger"
 
 configure_flags = node[:nginx][:configure_flags].join(" ")
-nginx_install = node[:nginx][:install_path]
-nginx_version = node[:nginx][:version]
-nginx_dir = node[:nginx][:dir]
-archive_cache = node[:nginx][:archive_cache]
+nginx_install   = node[:nginx][:install_path]
+nginx_version   = node[:nginx][:version]
+nginx_dir       = node[:nginx][:dir]
+archive_cache   = node[:nginx][:archive_cache] || Chef::Config[:file_cache_path]
+
+remote_file "#{archive_cache}/nginx-#{nginx_version}.tar.gz" do
+  source "http://sysoev.ru/nginx/nginx-#{nginx_version}.tar.gz"
+  action :create_if_missing
+end
+
+bash "extract_nginx_source" do
+  cwd archive_cache
+  code "tar zxf nginx-#{nginx_version}.tar.gz"
+  not_if "test -d #{archive_cache}/nginx-#{nginx_version}"
+end
 
 rvm_shell "build passenger_nginx_module" do
   ruby_string   node[:rvm_passenger][:rvm_ruby]

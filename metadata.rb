@@ -20,7 +20,7 @@ end
 attribute "rvm_passenger/version",
   :display_name => "Version of passenger",
   :description => "The version of passenger to deploy. This will be in a format used by the gem command.",
-  :default => "3.0.3"
+  :default => "3.0.7"
 
 attribute "rvm_passenger/rvm_ruby",
   :display_name => "RVM ruby to use",
