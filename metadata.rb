@@ -13,6 +13,6 @@ depends "rvm"
 depends "nginx"
 depends "apache2"
 
-%w{ ubuntu debian }.each do |os|
+%w{ ubuntu debian suse }.each do |os|
   supports os
 end
