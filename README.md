@@ -107,15 +107,22 @@ Installs passenger as an nginx module. Requires the `nginx::source` recipe.
 
 ## version
 
-The version of passenger to deploy. This will be in a format used by the gem command. 
+The version of passenger to deploy. This will be in a format used by the gem
+command. For example:
 
-Default is `3.0.7`.
+    node['rvm_passenger']['version'] = "3.0.8"
+
+Default is the most current version which is queried dynamically from RubyGems.
 
 ## rvm_ruby
 
-The RVM ruby (and optional gemset) under which to install the passenger gem. This will be in a format used by the rvm command.
+The RVM ruby (and optional gemset) under which to install the passenger gem.
+For example:
 
-Default is `ree-1.8.7-2011.03@passenger`.
+    node['rvm_passenger']['rvm_ruby'] = "ruby-1.8.7-p352@passenger"
+
+Default is the default RVM Ruby in a gemset called "passenger", i.e.
+`"#{node['rvm']['default_rvm']}@passenger"`.
 
 ## root_path
 

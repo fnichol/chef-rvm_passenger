@@ -1,17 +1,10 @@
 #
 # Cookbook Name:: rvm_passenger
-# Based on passenger_enterprise
-# attributes:: rvm_passenger
+# Attributes:: default
 #
-# Author:: Joshua Timberman (<joshua@opscode.com>)
-# Author:: Joshua Sierles (<joshua@37signals.com>)
-# Author:: Michael Hale (<mikehale@gmail.com>)
 # Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 #
-# Copyright:: 2009, Opscode, Inc
-# Copyright:: 2009, 37signals
-# Coprighty:: 2009, Michael Hale
-# Copyright:: 2010, Fletcher Nichol
+# Copyright:: 2010, 2011, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,5 +19,9 @@
 # limitations under the License.
 #
 
+# version will default to most current version from RubyGems, unless overriden
 default[:rvm_passenger][:version]     = nil
-default[:rvm_passenger][:rvm_ruby]    = "ree-1.8.7-2011.03@passenger"
+
+# rvm_ruby will default to "#{node['rvm']['default_ruby']}@passenger",
+# unless overriden
+default[:rvm_passenger][:rvm_ruby]    = nil

@@ -22,6 +22,9 @@
 class Chef
   module RVMPassenger
     module RecipeHelpers
+      ##
+      # Sets the version attribute to the most current RubyGems release,
+      # unless set
       def determine_gem_version_if_not_given
         if node[:rvm_passenger][:version].nil?
           require 'rubygems'
@@ -33,6 +36,19 @@ class Chef
           node.set[:rvm_passenger][:version] = spec.version.to_s
           Chef::Log.debug(%{Setting node['rvm_passenger']['version'] = } +
             %{"#{node['rvm_passenger']['version']}"})
+        end
+      end
+
+      ##
+      # Sets the rvm_ruby attribute to rvm/default ruby, unless set
+      def determine_rvm_ruby_if_not_given
+        if node['rvm_passenger']['rvm_ruby'].nil?
+          rvm_ruby = node['rvm']['default_ruby']
+          rvm_ruby += "@passenger" unless rvm_ruby == "system"
+
+          node.set['rvm_passenger']['rvm_ruby'] = rvm_ruby
+          Chef::Log.debug(%{Setting node['rvm_passenger']['rvm_ruby'] = } +
+            %{"#{node['rvm_passenger']['rvm_ruby']}"})
         end
       end
     end

@@ -38,6 +38,7 @@ else
 end
 
 determine_gem_version_if_not_given
+determine_rvm_ruby_if_not_given
 
 rvm_environment node[:rvm_passenger][:rvm_ruby]
 
