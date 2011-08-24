@@ -26,5 +26,5 @@
 # limitations under the License.
 #
 
-default[:rvm_passenger][:version]     = "3.0.7"
+default[:rvm_passenger][:version]     = nil
 default[:rvm_passenger][:rvm_ruby]    = "ree-1.8.7-2011.03@passenger"

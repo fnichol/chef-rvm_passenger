@@ -24,6 +24,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+class Chef::Recipe
+  # mix in recipe helpers
+  include Chef::RVMPassenger::RecipeHelpers
+end
+
 include_recipe "rvm::system"
 
 if platform?("suse")
@@ -31,6 +36,8 @@ if platform?("suse")
 else
   package "libcurl4-openssl-dev"
 end
+
+determine_gem_version_if_not_given
 
 rvm_environment node[:rvm_passenger][:rvm_ruby]
 
