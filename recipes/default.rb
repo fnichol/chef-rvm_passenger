@@ -43,7 +43,7 @@ end
 # calculate rvm_passenger/root_path if not set
 ruby_block "calculate rvm_passenger/root_path" do
   block do
-    rvm_env = RVM::Environment.new
+    rvm_env = ::RVM::Environment.new
     rvm_env.use node[:rvm_passenger][:rvm_ruby]
     gem_home = rvm_env.info.first[1]["homes"]["gem"]
     result = "#{gem_home}/gems/passenger-#{node[:rvm_passenger][:version]}"
@@ -64,7 +64,7 @@ end
 
 ruby_block "calculate rvm_passenger/ruby_wrapper" do
   block do
-    rvm_env = RVM::Environment.new
+    rvm_env = ::RVM::Environment.new
     rvm_env.use node[:rvm_passenger][:rvm_ruby]
     gem_home = rvm_env.info.first[1]["homes"]["gem"]
     wrapper_home = gem_home.sub(/\/gems\//, "/wrappers/")
