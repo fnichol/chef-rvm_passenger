@@ -25,3 +25,10 @@ default[:rvm_passenger][:version]     = nil
 # rvm_ruby will default to "#{node['rvm']['default_ruby']}@passenger",
 # unless overriden
 default[:rvm_passenger][:rvm_ruby]    = nil
+
+case platform
+when "suse"
+  node.set['rvm_passenger']['common_pkgs'] = %w{libcurl-devel}
+else
+  node.set['rvm_passenger']['common_pkgs'] = %w{libcurl4-openssl-dev}
+end

@@ -3,14 +3,9 @@
 # Based on passenger_enterprise
 # Recipe:: default
 #
-# Author:: Joshua Timberman (<joshua@opscode.com>)
-# Author:: Joshua Sierles (<joshua@37signals.com>)
-# Author:: Michael Hale (<mikehale@gmail.com>)
+# Author:: Fletcher Nichol <fnichol@nichol.ca>
 #
-# Copyright:: 2009, Opscode, Inc
-# Copyright:: 2009, 37signals
-# Coprighty:: 2009, Michael Hale
-# Copyright:: 2010, Fletcher Nichol
+# Copyright:: 2010, 2011, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,35 +24,38 @@ class Chef::Recipe
   include Chef::RVMPassenger::RecipeHelpers
 end
 
-include_recipe "rvm::system"
-
-if platform?("suse")
-  package "libcurl-devel"
-else
-  package "libcurl4-openssl-dev"
-end
-
 determine_gem_version_if_not_given
 determine_rvm_ruby_if_not_given
 
-rvm_environment node[:rvm_passenger][:rvm_ruby]
+rvm_ruby          = node['rvm_passenger']['rvm_ruby']
+passenger_version = node['rvm_passenger']['version']
 
-# install passenger gem
-rvm_gem "passenger" do
-  ruby_string node[:rvm_passenger][:rvm_ruby]
-  version     node[:rvm_passenger][:version]
+include_recipe "rvm::system"
+
+Array(node['rvm_passenger']['common_pkgs']).each do |pkg|
+  package pkg
 end
 
-# calculate rvm_passenger/root_path if not set
-ruby_block "calculate rvm_passenger/root_path" do
+rvm_environment rvm_ruby
+
+rvm_gem "passenger" do
+  ruby_string rvm_ruby
+  version     passenger_version
+end
+
+# calculate the root_path attribute if it isn't set. This is evaluated in the
+# execute phase because the RVM environment is queried and the Ruby must be
+# installed.
+ruby_block "Calculate node['rvm_passenger']['root_path']" do
   block do
     rvm_env = ::RVM::Environment.new
-    rvm_env.use node[:rvm_passenger][:rvm_ruby]
-    gem_home = rvm_env.info.first[1]["homes"]["gem"]
-    result = "#{gem_home}/gems/passenger-#{node[:rvm_passenger][:version]}"
+    rvm_env.use rvm_ruby
+    gem_home = rvm_env.info.first[1]['homes']['gem']
+    result = "#{gem_home}/gems/passenger-#{passenger_version}"
 
-    Chef::Log.debug(%{Calculated value of rvm_passenger/root_path is: "#{result}"})
-    node.set[:rvm_passenger][:root_path] = result
+    node.set['rvm_passenger']['root_path'] = result
+    Chef::Log.debug(%{Setting node['rvm_passenger']['root_path'] = } +
+      %{"#{node['rvm_passenger']['root_path']}"})
 
     # NOTE: Warning, vicious hack! A not_if shell block gets interpolated at
     # compile time and there was no other found way to delay eval until execution
@@ -65,23 +63,25 @@ ruby_block "calculate rvm_passenger/root_path" do
     # need it. I feel sick to my stomach. Somwhere a kitten is getting clubbed.
     ::File.open("/tmp/passenger_root_path", 'w') { |f| f.write(result) }
   end
-  only_if do
-    node[:rvm_passenger][:root_path].nil?
-  end
+
+  not_if  { node['rvm_passenger']['root_path'] }
 end
 
-ruby_block "calculate rvm_passenger/ruby_wrapper" do
+# calculate the ruby_wrapper attribute if it isn't set. This is evaluated in
+# the execute phase because the RVM environment is queried and the Ruby must be
+# installed.
+ruby_block "Calculate node['rvm_passenger']['ruby_wrapper']" do
   block do
     rvm_env = ::RVM::Environment.new
-    rvm_env.use node[:rvm_passenger][:rvm_ruby]
-    gem_home = rvm_env.info.first[1]["homes"]["gem"]
-    wrapper_home = gem_home.sub(/\/gems\//, "/wrappers/")
+    rvm_env.use rvm_ruby
+    gem_home = rvm_env.info.first[1]['homes']['gem']
+    wrapper_home = gem_home.sub(/\/gems\//, '/wrappers/')
     result = "#{wrapper_home}/ruby"
 
-    Chef::Log.debug(%{Calculated value of rvm_passenger/ruby_wrapper is: "#{result}"})
-    node.set[:rvm_passenger][:ruby_wrapper] = result
+    node.set['rvm_passenger']['ruby_wrapper'] = result
+    Chef::Log.debug(%{Setting node['rvm_passenger']['ruby_wrapper'] = } +
+      %{"#{node['rvm_passenger']['ruby_wrapper']}"})
   end
-  only_if do
-    node[:rvm_passenger][:ruby_wrapper].nil?
-  end
+
+  not_if  { node['rvm_passenger']['ruby_wrapper'] }
 end
