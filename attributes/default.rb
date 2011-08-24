@@ -28,7 +28,11 @@ default[:rvm_passenger][:rvm_ruby]    = nil
 
 case platform
 when "suse"
-  node.set['rvm_passenger']['common_pkgs'] = %w{libcurl-devel}
+  node.set['rvm_passenger']['common_pkgs']  = %w{libcurl-devel}
+  node.set['rvm_passenger']['apache2_pkgs'] =
+    %w{apache2-devel libapr1-devel libapr-util1-devel}
 else
-  node.set['rvm_passenger']['common_pkgs'] = %w{libcurl4-openssl-dev}
+  node.set['rvm_passenger']['common_pkgs']  = %w{libcurl4-openssl-dev}
+  node.set['rvm_passenger']['apache2_pkgs'] =
+    %w{apache2-threaded-dev libapr1-dev libaprutil1-dev}
 end

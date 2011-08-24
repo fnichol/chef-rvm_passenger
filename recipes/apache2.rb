@@ -6,6 +6,7 @@
 # Author:: Joshua Timberman (<joshua@opscode.com>)
 # Author:: Joshua Sierles (<joshua@37signals.com>)
 # Author:: Michael Hale (<mikehale@gmail.com>)
+# Author:: Fletcher Nichol <fnichol@nichol.ca>
 #
 # Copyright:: 2009, Opscode, Inc
 # Copyright:: 2009, 37signals
@@ -27,46 +28,46 @@
 include_recipe "rvm_passenger"
 include_recipe "apache2"
 
-# set rvm_passenger/module_path if not set
-ruby_block "calculate rvm_passenger/module_path" do
+rvm_ruby    = node['rvm_passenger']['rvm_ruby']
+apache_dir  = node['apache']['dir']
+
+# set the module_path attribute if it isn't set
+ruby_block "Calculate node['rvm_passenger']['module_path']" do
   block do
-    node.set[:rvm_passenger][:module_path] =
-      "#{node[:rvm_passenger][:root_path]}/ext/apache2/mod_passenger.so"
+    root_path = node['rvm_passenger']['root_path']
+
+    node.set['rvm_passenger']['module_path'] =
+      "#{root_path}/ext/apache2/mod_passenger.so"
+    Chef::Log.debug(%{Setting node['rvm_passenger']['module_path'] = } +
+      %{"#{node['rvm_passenger']['module_path']}"})
   end
-  only_if do
-    node[:rvm_passenger][:module_path].nil?
-  end
+
+  not_if  { node['rvm_passenger']['module_path'] }
 end
 
-if platform?("suse")
-  apache_dev_pkgs = %w{ apache2-devel libapr1-devel libapr-util1-devel }
-else
-  apache_dev_pkgs = %w{ apache2-threaded-dev libapr1-dev libaprutil1-dev }
-end
-apache_dev_pkgs.each do |pkg|
-  package pkg do
-    action :install
-  end
+Array(node['rvm_passenger']['apache2_pkgs']).each do |pkg|
+  package pkg
 end
 
 rvm_shell "passenger_apache2_module" do
-  ruby_string   node[:rvm_passenger][:rvm_ruby]
+  ruby_string   rvm_ruby
   code          %{passenger-install-apache2-module -a}
-  not_if        { ::File.exists? node[:rvm_passenger][:module_path] }
+
+  not_if        { ::File.exists? node['rvm_passenger']['module_path'] }
 end
 
-template "#{node[:apache][:dir]}/mods-available/passenger.load" do
-  source "passenger.load.erb"
-  owner "root"
-  group "root"
-  mode 0755
+template "#{apache_dir}/mods-available/passenger.load" do
+  source  'passenger.load.erb'
+  owner   'root'
+  group   'root'
+  mode    '0755'
 end
 
-template "#{node[:apache][:dir]}/mods-available/passenger.conf" do
-  source "passenger.conf.erb"
-  owner "root"
-  group "root"
-  mode 0755
+template "#{apache_dir}/mods-available/passenger.conf" do
+  source  'passenger.conf.erb'
+  owner   'root'
+  group   'root'
+  mode    '0755'
 end
 
 apache_module "passenger"
