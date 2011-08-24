@@ -9,9 +9,9 @@ recipe "rvm_passenger",           "Installs Passenger gem with RVM"
 recipe "rvm_passenger::apache2",  "Enables Apache module configuration for passenger under RVM"
 recipe "rvm_passenger::nginx",    "Installs Passenger gem w/ RVM, and recompiles support into Nginx"
 
-depends "rvm"
-depends "nginx"
-depends "apache2"
+depends "rvm",      "~> 0.8.0"
+depends "nginx",    "~> 0.99.0"
+depends "apache2",  "~> 0.99.4"
 
 %w{ ubuntu debian suse }.each do |os|
   supports os
