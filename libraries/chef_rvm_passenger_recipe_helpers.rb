@@ -31,7 +31,7 @@ class Chef
           require 'rubygems/dependency_installer'
 
           spec = Gem::DependencyInstaller.new.find_gems_with_sources(
-            Gem::Dependency.new("passenger")).last[0]
+            Gem::Dependency.new("passenger", '>= 0')).last[0]
 
           node.set[:rvm_passenger][:version] = spec.version.to_s
           Chef::Log.debug(%{Setting node['rvm_passenger']['version'] = } +
