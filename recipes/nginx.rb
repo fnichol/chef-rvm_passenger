@@ -34,7 +34,7 @@ nginx_dir       = node['nginx']['dir']
 archive_cache   = node['nginx']['archive_cache'] || Chef::Config['file_cache_path']
 
 remote_file "#{archive_cache}/nginx-#{nginx_version}.tar.gz" do
-  source  "http://sysoev.ru/nginx/nginx-#{nginx_version}.tar.gz"
+  source "http://nginx.org/download/nginx-#{nginx_version}.tar.gz"
   action  :create_if_missing
 end
 
