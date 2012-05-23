@@ -21,6 +21,10 @@
 
 class Chef
   module RVMPassenger
+
+    # Exceptions
+    class GemVersionNotFound < RuntimeError; end
+
     module RecipeHelpers
       ##
       # Sets the version attribute to the most current RubyGems release,
@@ -31,9 +35,11 @@ class Chef
           require 'rubygems/dependency_installer'
 
           spec = Gem::DependencyInstaller.new.find_gems_with_sources(
-            Gem::Dependency.new("passenger", '>= 0')).last[0]
+            Gem::Dependency.new("passenger", '>= 0')).last
 
-          node.set[:rvm_passenger][:version] = spec.version.to_s
+          raise Chef::RVMPassenger::GemVersionNotFound, "Cannot find any suitable gem version of ruby Passenger. Please specify node[:rvm_passenger][:version] or check if there are any connection problem with the gem sources" if spec.nil?
+
+          node.set[:rvm_passenger][:version] = spec[0].version.to_s
           Chef::Log.debug(%{Setting node['rvm_passenger']['version'] = } +
             %{"#{node['rvm_passenger']['version']}"})
         end
