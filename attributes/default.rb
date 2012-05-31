@@ -20,11 +20,11 @@
 #
 
 # version will default to most current version from RubyGems, unless overriden
-default[:rvm_passenger][:version]     = nil
+default[:rvm_passenger][:version]      = nil
 
 # rvm_ruby will default to "#{node['rvm']['default_ruby']}@passenger",
 # unless overriden
-default[:rvm_passenger][:rvm_ruby]    = nil
+default[:rvm_passenger][:rvm_ruby]     = nil
 
 case platform
 when "suse"
