@@ -1,25 +1,34 @@
-# Description
+# <a name="title"></a> chef-rvm_passenger
+
+## <a name="description"></a> Description
 
 Installs passenger gem via RVM and configures Apache or Nginx.
 
-# Requirements
+## <a name="usage"></a> Usage
 
-## Chef
+Comming soon...
+
+## <a name="requirements"></a> Requirements
+
+### <a name="requirements-chef"></a> Chef
 
 Tested on 0.9.18, 0.10.2 and 0.10.4 but newer and older version should work
 just fine. File an [issue][issues] if this isn't the case.
 
-## Platform
+### <a name="requirements-platform"></a> Platform
 
 The following platforms have been tested with this cookbook, meaning that
 the recipes run on these platforms without error:
 
 * ubuntu (10.04/10.10/11.04)
 * debian (6.0)
+* suse
+* centos (5/6)
+* redhat (5/6)
 
 Please [report][issues] any additional platforms so they can be added.
 
-## Cookbooks
+### <a name="requirements-cookbooks"></a> Cookbooks
 
 This cookbook depends on the following external cookbooks:
 
@@ -27,35 +36,32 @@ This cookbook depends on the following external cookbooks:
 * [nginx][nginx_cb] (Opscode)
 * [apache2][apache2_cb] (Opscode)
 
-# Installation
+## <a name="installation"></a> Installation
 
 Depending on the situation and use case there are several ways to install
 this cookbook. All the methods listed below assume a tagged version release
 is the target, but omit the tags to get the head of development. A valid
 Chef repository structure like the [Opscode repo][chef_repo] is also assumed.
 
-## From the Opscode Community Platform
+### <a name="installation-librarian"></a> Using Librarian
 
-**Coming soon:** To install this cookbook from the Opscode platform, use the *knife* command:
-
-    knife cookbook site install rvm_passenger
-
-## Using Librarian
-
-The [Librarian][librarian] gem aims to be Bundler for your Chef cookbooks.
-Include a reference to the cookbook in a **Cheffile** and run
-`librarian-chef install`. To install with Librarian:
+[Librarian-Chef][librarian] is a bundler for your Chef cookbooks.
+Include a reference to the cookbook in a [Cheffile][cheffile] and run
+`librarian-chef install`. To install Librarian-Chef:
 
     gem install librarian
     cd chef-repo
     librarian-chef init
+
+To reference the Git version:
+
     cat >> Cheffile <<END_OF_CHEFFILE
     cookbook 'rvm_passenger',
-      :git => 'git://github.com/fnichol/chef-rvm_passenger.git', :ref => 'v0.8.0'
+      :git => 'https://github.com/fnichol/chef-rvm_passenger', :ref => 'v0.8.0'
     END_OF_CHEFFILE
     librarian-chef install
 
-## Using knife-github-cookbooks
+### <a name="installation-kgc"></a> Using knife-github-cookbooks
 
 The [knife-github-cookbooks][kgc] gem is a plugin for *knife* that supports
 installing cookbooks directly from a GitHub repository. To install with the
@@ -65,18 +71,7 @@ plugin:
     cd chef-repo
     knife cookbook github install fnichol/chef-rvm_passenger/v0.8.0
 
-## As a Git Submodule
-
-A common practice (which is getting dated) is to add cookbooks as Git
-submodules. This is accomplishes like so:
-
-    cd chef-repo
-    git submodule add git://github.com/fnichol/chef-rvm_passenger.git cookbooks/rvm_passenger
-    git submodule init && git submodule update
-
-**Note:** the head of development will be linked here, not a tagged release.
-
-## As a Tarball
+### <a name="installation-tarball"></a> As a Tarball
 
 If the cookbook needs to downloaded temporarily just to be uploaded to a Chef
 Server or Opscode Hosted Chef, then a tarball installation might fit the bill:
@@ -85,27 +80,39 @@ Server or Opscode Hosted Chef, then a tarball installation might fit the bill:
     curl -Ls https://github.com/fnichol/chef-rvm_passenger/tarball/v0.8.0 | tar xfz - && \
       mv fnichol-chef-rvm_passenger-* rvm_passenger
 
-# Usage
+### <a name="installation-gitsubmodule"></a> As a Git Submodule
 
-Comming soon...
+A dated practice (which is discouraged) is to add cookbooks as Git
+submodules. This is accomplishes like so:
 
-# Recipes
+    cd chef-repo
+    git submodule add git://github.com/fnichol/chef-rvm_passenger.git cookbooks/rvm_passenger
+    git submodule init && git submodule update
 
-## default
+**Note:** the head of development will be linked here, not a tagged release.
+
+### <a name="installation-platform"></a> From the Opscode Community Platform
+
+This cookbook is not currently available on the site as it relies on a cookbook
+([rvm][rvm_cb]) not available on the community site.
+
+## <a name="recipes"></a> Recipes
+
+### <a name="recipes-default"></a> default
 
 Installs dependencies and contains helpers for other recipes.
 
-## apache2
+### <a name="recipes-apache2"></a> apache2
 
 Installs passenger as an apache2 module. Requires the `apache2` recipe.
 
-## nginx
+### <a name="recipes-nginx"></a> nginx
 
 Installs passenger as an nginx module. Requires the `nginx::source` recipe.
 
-# Attributes
+## <a name="attributes"></a> Attributes
 
-## version
+### <a name="attributes-version"></a> version
 
 The version of passenger to deploy. This will be in a format used by the gem
 command. For example:
@@ -114,7 +121,7 @@ command. For example:
 
 Default is the most current version which is queried dynamically from RubyGems.
 
-## rvm_ruby
+### <a name="attributes-rvm-ruby"></a> rvm_ruby
 
 The RVM ruby (and optional gemset) under which to install the passenger gem.
 For example:
@@ -124,19 +131,19 @@ For example:
 Default is the default RVM Ruby in a gemset called "passenger", i.e.
 `"#{node['rvm']['default_rvm']}@passenger"`.
 
-## root_path
+### <a name="attributes-root-path"></a> root_path
 
 Optionally override the full path to the root of the installed passenger gem.
 
-## module_path
+### <a name="attributes-module-path"></a> module_path
 
 Optionallly override the full path to the Apache2 module.
 
-# Resources and Providers
+## <a name="lwrps"></a> Resources and Providers
 
 There are **no** resources or providers defined.
 
-# Development
+## <a name="development"></a> Development
 
 * Source hosted at [GitHub][repo]
 * Report issues/Questions/Feature requests on [GitHub Issues][issues]
@@ -144,7 +151,7 @@ There are **no** resources or providers defined.
 Pull requests are very welcome! Make sure your patches are well tested.
 Ideally create a topic branch for every separate change you make.
 
-# License and Author
+## <a name="license"></a> License and Author
 
 Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 
