@@ -1,4 +1,4 @@
-# <a name="title"></a> chef-rvm_passenger
+# <a name="title"></a> chef-rvm_passenger [![Build Status](https://secure.travis-ci.org/fnichol/chef-rvm_passenger.png?branch=master)](http://travis-ci.org/fnichol/chef-rvm_passenger)
 
 ## <a name="description"></a> Description
 
