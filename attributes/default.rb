@@ -31,8 +31,8 @@ when "suse"
   node.set['rvm_passenger']['common_pkgs']  = %w{libcurl-devel}
   node.set['rvm_passenger']['apache2_pkgs'] =
     %w{apache2-devel libapr1-devel libapr-util1-devel}
-when "centos", "redhat"
-  if(node.platform_version.to_f < 6)
+when "centos","redhat","fedora","scientific","amazon"
+  if(node['platform_version'].to_f < 6)
     node.set['rvm_passenger']['common_pkgs']  = %w{libcurl-devel openssl-devl zlib-devel}
   else
     node.set['rvm_passenger']['common_pkgs']  = %w{curl-devel}
