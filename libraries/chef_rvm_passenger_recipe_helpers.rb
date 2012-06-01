@@ -37,7 +37,12 @@ class Chef
           spec = Gem::DependencyInstaller.new.find_gems_with_sources(
             Gem::Dependency.new("passenger", '>= 0')).last
 
-          raise Chef::RVMPassenger::GemVersionNotFound, "Cannot find any suitable gem version of ruby Passenger. Please specify node[:rvm_passenger][:version] or check if there are any connection problem with the gem sources" if spec.nil?
+          if spec.nil?
+            raise Chef::RVMPassenger::GemVersionNotFound,
+              "Cannot find any suitable gem version of ruby Passenger. " +
+              "Please specify node['rvm_passenger']['version'] or check if " +
+              "there are any connection problem with the gem sources."
+          end
 
           node.set[:rvm_passenger][:version] = spec[0].version.to_s
           Chef::Log.debug(%{Setting node['rvm_passenger']['version'] = } +
