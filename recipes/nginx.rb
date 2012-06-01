@@ -46,7 +46,7 @@ bash "extract_nginx_source" do
 end
 
 rvm_shell "build passenger_nginx_module" do
-  ruby_string   node[:rvm_passenger][:rvm_ruby]
+  ruby_string   node['rvm_passenger']['rvm_ruby']
   code          <<-INSTALL
     passenger-install-nginx-module \
       --auto --prefix=#{nginx_install} \
