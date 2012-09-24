@@ -70,6 +70,8 @@ template "#{apache_dir}/mods-available/passenger.conf" do
   mode    '0755'
 end
 
+# We need to run this inside ruby_block, cause we do not have
+# module_path a the compile time, but this will cause apache to restart twice
 context = self
 ruby_block "Enable passenger apache module" do
   block do
