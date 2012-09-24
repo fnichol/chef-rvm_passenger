@@ -30,16 +30,9 @@ class Chef
         gem_home = rvm_env.info.first[1]['homes']['gem']
         result = "#{gem_home}/gems/passenger-#{passenger_version}"
 
-        node.set['rvm_passenger']['root_path'] = result
+        node.default['rvm_passenger']['root_path'] = result
         Chef::Log.debug(%{Setting node['rvm_passenger']['root_path'] = } +
           %{"#{node['rvm_passenger']['root_path']}"})
-
-        # NOTE: Warning, vicious hack! A not_if shell block gets interpolated
-        # at compile time and there was no other found way to delay eval
-        # until execution time. Here's a low level way: write a file, then
-        # read it out when you need it. I feel sick to my stomach. Somwhere a
-        # kitten is getting clubbed.
-        ::File.open("/tmp/passenger_root_path", 'w') { |f| f.write(result) }
       end
 
       def for_ruby_wrapper
@@ -47,7 +40,7 @@ class Chef
         wrapper_home = gem_home.sub(/\/gems\//, '/wrappers/')
         result = "#{wrapper_home}/ruby"
 
-        node.set['rvm_passenger']['ruby_wrapper'] = result
+        node.default['rvm_passenger']['ruby_wrapper'] = result
         Chef::Log.debug(%{Setting node['rvm_passenger']['ruby_wrapper'] = } +
           %{"#{node['rvm_passenger']['ruby_wrapper']}"})
       end
