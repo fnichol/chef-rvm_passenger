@@ -30,7 +30,7 @@ class Chef
       # Sets the version attribute to the most current RubyGems release,
       # unless set
       def determine_gem_version_if_not_given
-        if node[:rvm_passenger][:version].nil?
+        if node['rvm_passenger']['version'].nil?
           require 'rubygems'
           require 'rubygems/dependency_installer'
 
@@ -44,7 +44,7 @@ class Chef
               "there are any connection problem with the gem sources."
           end
 
-          node.set[:rvm_passenger][:version] = spec[0].version.to_s
+          node.set['rvm_passenger']['version'] = spec[0].version.to_s
           Chef::Log.debug(%{Setting node['rvm_passenger']['version'] = } +
             %{"#{node['rvm_passenger']['version']}"})
         end
