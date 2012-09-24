@@ -30,7 +30,7 @@ class Chef
         gem_home = rvm_env.info.first[1]['homes']['gem']
         result = "#{gem_home}/gems/passenger-#{passenger_version}"
 
-        node.set['rvm_passenger']['root_path'] = result
+        node.default['rvm_passenger']['root_path'] = result
         Chef::Log.debug(%{Setting node['rvm_passenger']['root_path'] = } +
           %{"#{node['rvm_passenger']['root_path']}"})
       end
@@ -40,7 +40,7 @@ class Chef
         wrapper_home = gem_home.sub(/\/gems\//, '/wrappers/')
         result = "#{wrapper_home}/ruby"
 
-        node.set['rvm_passenger']['ruby_wrapper'] = result
+        node.default['rvm_passenger']['ruby_wrapper'] = result
         Chef::Log.debug(%{Setting node['rvm_passenger']['ruby_wrapper'] = } +
           %{"#{node['rvm_passenger']['ruby_wrapper']}"})
       end
