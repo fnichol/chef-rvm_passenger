@@ -33,13 +33,6 @@ class Chef
         node.set['rvm_passenger']['root_path'] = result
         Chef::Log.debug(%{Setting node['rvm_passenger']['root_path'] = } +
           %{"#{node['rvm_passenger']['root_path']}"})
-
-        # NOTE: Warning, vicious hack! A not_if shell block gets interpolated
-        # at compile time and there was no other found way to delay eval
-        # until execution time. Here's a low level way: write a file, then
-        # read it out when you need it. I feel sick to my stomach. Somwhere a
-        # kitten is getting clubbed.
-        ::File.open("/tmp/passenger_root_path", 'w') { |f| f.write(result) }
       end
 
       def for_ruby_wrapper
