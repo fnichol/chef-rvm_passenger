@@ -70,6 +70,12 @@ template "#{apache_dir}/mods-available/passenger.conf" do
   mode    '0755'
 end
 
-apache_module "passenger" do
-  module_path node['rvm_passenger']['module_path']
+context = self
+ruby_block "Enable passenger apache module" do
+  block do
+    context.apache_module "passenger" do
+      module_path node['rvm_passenger']['module_path']
+    end
+    context = nil
+  end
 end
