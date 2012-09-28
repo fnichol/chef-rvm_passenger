@@ -61,11 +61,23 @@ rvm_shell "build passenger_nginx_module" do
   CHECK
 end
 
+# Get the passenger directives. If any of them are not null, pass it to
+# the template. 
+conf_directives = {}
+node[:rvm_passenger]['directives'].each do |k,v|
+  if not v.nil?
+    conf_directives[k] = v
+  end
+end
+
 template "#{nginx_dir}/conf.d/passenger.conf" do
   source    "passenger_nginx.conf.erb"
   owner     "root"
   group     "root"
   mode      "0644"
+  variables({
+    :directives => conf_directives
+  })
   notifies  :restart, resources(:service => "nginx")
 end
 

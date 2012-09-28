@@ -139,6 +139,15 @@ Optionally override the full path to the root of the installed passenger gem.
 
 Optionallly override the full path to the Apache2 module.
 
+### <a name="attributes-directives"></a>directives
+
+Server-wide configuration settings. For example:
+
+    node['rvm_passenger']['directives']['passenger_user_switching'] = "off"
+    node['rvm_passenger']['directives']['passenger_default_user'] = "nobody"
+
+Disable user switching and set the passenger default user to nobody.
+
 ## <a name="lwrps"></a> Resources and Providers
 
 There are **no** resources or providers defined.
