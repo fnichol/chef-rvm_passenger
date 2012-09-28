@@ -26,6 +26,9 @@ default['rvm_passenger']['version']      = nil
 # unless overriden
 default['rvm_passenger']['rvm_ruby']     = nil
 
+# additional directives to add to server-scope configuration
+default['rvm_passenger']['directives']   = {}
+
 case platform
 when "suse"
   node.set['rvm_passenger']['common_pkgs']  = %w{libcurl-devel}
