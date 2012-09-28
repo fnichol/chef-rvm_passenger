@@ -43,3 +43,53 @@ else
   node.set['rvm_passenger']['apache2_pkgs'] =
     %w{apache2-threaded-dev libapr1-dev libaprutil1-dev}
 end
+
+# Attributes for configuring the nginx http context/apache server context
+# directives. These appear in passenger.conf in conf.d/ for nginx and 
+# mods-enabled/ for apache. All values should be strings.
+
+# These directives are only valid in the nginx http contenxt/apache server
+# contexts. passenger_root and passenger_ruby are also valid here, but are
+# derived/configured above.
+default['rvm_passenger']['directives']['passenger_user_switching'] = nil
+default['rvm_passenger']['directives']['passenger_default_user'] = nil
+default['rvm_passenger']['directives']['passenger_default_group'] = nil
+default['rvm_passenger']['directives']['passenger_max_pool_size'] = nil
+default['rvm_passenger']['directives']['passenger_max_instances_per_app'] = nil
+default['rvm_passenger']['directives']['passenger_pool_idle_time'] = nil
+default['rvm_passenger']['directives']['passenger_log_level'] = nil
+default['rvm_passenger']['directives']['passenger_debug_log_file'] = nil
+
+# These directives are valid in the nginx http/apache server context
+# but may be overriden in more granular contexts.
+default['rvm_passenger']['directives']['passenger_spawn_method'] = nil
+default['rvm_passenger']['directives']['passenger_enabled'] = nil
+default['rvm_passenger']['directives']['passenger_base_uri'] = nil
+default['rvm_passenger']['directives']['passenger_use_global_queue'] = nil
+default['rvm_passenger']['directives']['passenger_ignore_client_abort'] = nil
+default['rvm_passenger']['directives']['passenger_set_cgi_param'] = nil
+default['rvm_passenger']['directives']['passenger_pass_header'] = nil
+default['rvm_passenger']['directives']['passenger_buffer_response'] = nil
+default['rvm_passenger']['directives']['passenger_buffer_size'] = nil
+default['rvm_passenger']['directives']['passenger_buffers'] = nil
+default['rvm_passenger']['directives']['passenger_busy_buffer_size'] = nil
+default['rvm_passenger']['directives']['passenger_user'] = nil
+default['rvm_passenger']['directives']['passenger_group'] = nil
+default['rvm_passenger']['directives']['passenger_friendly_error_pages'] = nil
+default['rvm_passenger']['directives']['passenger_min_instances'] = nil
+default['rvm_passenger']['directives']['passenger_max_requests'] = nil
+default['rvm_passenger']['directives']['passenger_memory_limit'] = nil
+default['rvm_passenger']['directives']['passenger_per_start'] = nil
+default['rvm_passenger']['directives']['rails_env'] = nil
+default['rvm_passenger']['directives']['rails_framework_spawner_idle_time'] = nil
+default['rvm_passenger']['directives']['rails_app_spawner_idle_time'] = nil
+default['rvm_passenger']['directives']['rack_env'] = nil
+
+# These directives are only valid for Phusion Passenger Enterprise Edition.
+# The following are valid in the nginx/apache server context, but may be
+# overriden in more granular contexts.
+default['rvm_passenger']['directives']['passenger_rolling_restarts'] = nil
+default['rvm_passenger']['directives']['passenger_resist_deployment_errors'] = nil
+default['rvm_passenger']['directives']['passenger_debugger'] = nil
+default['rvm_passenger']['directives']['passenger_max_instances'] = nil
+default['rvm_passenger']['directives']['passenger_max_request_time'] = nil

@@ -56,6 +56,16 @@ rvm_shell "passenger_apache2_module" do
   not_if        { ::File.exists? node['rvm_passenger']['module_path'] }
 end
 
+# Get the passenger directives. If any of them are not null, pass it to
+# the template. Reformat into apache-style directives.
+conf_directives = {}
+node[:rvm_passenger]['directives'].each do |k,v|
+  if not v.nil?
+    key = k.gsub(/_(\w)|^(\w)/) {|s| (s.gsub(/_/, '')).upcase}
+    conf_directives[key] = v
+  end
+end
+
 template "#{apache_dir}/mods-available/passenger.load" do
   source  'passenger.load.erb'
   owner   'root'
@@ -68,6 +78,9 @@ template "#{apache_dir}/mods-available/passenger.conf" do
   owner   'root'
   group   'root'
   mode    '0755'
+  variables({
+    :directives => conf_directives
+  })
 end
 
 apache_module "passenger" do
