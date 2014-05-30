@@ -54,6 +54,7 @@ rvm_shell "passenger_apache2_module" do
   code          %{passenger-install-apache2-module -a}
 
   not_if        { ::File.exists? node['rvm_passenger']['module_path'] }
+  notifies :restart, "service[apache2]", :delayed
 end
 
 template "#{apache_dir}/mods-available/passenger.load" do
@@ -70,6 +71,10 @@ template "#{apache_dir}/mods-available/passenger.conf" do
   mode    '0755'
 end
 
-apache_module "passenger" do
-  module_path node['rvm_passenger']['module_path']
+link "#{apache_dir}/mods-enabled/passenger.load" do
+  to "#{apache_dir}/mods-available/passenger.load"
+end
+
+link "#{apache_dir}/mods-enabled/passenger.conf" do
+  to "#{apache_dir}/mods-available/passenger.conf"
 end
