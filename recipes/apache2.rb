@@ -36,8 +36,19 @@ ruby_block "Calculate node['rvm_passenger']['module_path']" do
   block do
     root_path = node['rvm_passenger']['root_path']
 
-    node.default['rvm_passenger']['module_path'] =
-      "#{root_path}/ext/apache2/mod_passenger.so"
+    passenger_version = ::Chef::Version.new(node['rvm_passenger']['version'])
+
+    module_dir =
+      if passenger_version >= ::Chef::Version.new('4.0.5')
+        "buildout"
+      elsif passenger_version >= ::Chef::Version.new('3.9.0')
+        "libout"
+      else
+        "ext"
+      end
+
+    node.default['rvm_passenger']['module_path'] = "#{root_path}/#{module_dir}/apache2/mod_passenger.so"
+
     Chef::Log.debug(%{Setting node['rvm_passenger']['module_path'] = } +
       %{"#{node['rvm_passenger']['module_path']}"})
   end
@@ -51,7 +62,7 @@ end
 
 rvm_shell "passenger_apache2_module" do
   ruby_string   rvm_ruby
-  code          %{passenger-install-apache2-module -a}
+  code          %{passenger-install-apache2-module _#{node['rvm_passenger']['version']}_ -a}
 
   not_if        { ::File.exists? node['rvm_passenger']['module_path'] }
 end

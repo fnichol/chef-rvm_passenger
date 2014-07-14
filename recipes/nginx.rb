@@ -48,7 +48,7 @@ end
 rvm_shell "build passenger_nginx_module" do
   ruby_string   node['rvm_passenger']['rvm_ruby']
   code          <<-INSTALL
-    passenger-install-nginx-module \
+    passenger-install-nginx-module _#{node['rvm_passenger']['version']}_ \
       --auto --prefix=#{nginx_install} \
       --nginx-source-dir=#{archive_cache}/nginx-#{nginx_version} \
       --extra-configure-flags='#{configure_flags}'
