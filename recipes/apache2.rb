@@ -72,6 +72,7 @@ template "#{apache_dir}/mods-available/passenger.load" do
   owner   'root'
   group   'root'
   mode    '0755'
+  notifies :restart, resources(:service => 'apache2')
 end
 
 template "#{apache_dir}/mods-available/passenger.conf" do
@@ -79,6 +80,7 @@ template "#{apache_dir}/mods-available/passenger.conf" do
   owner   'root'
   group   'root'
   mode    '0755'
+  notifies :restart, resources(:service => 'apache2')
 end
 
 # We need to run this inside ruby_block, cause we do not have
