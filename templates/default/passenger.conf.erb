@@ -3,4 +3,10 @@
 # Local modifications will be overwritten.
 #
 PassengerRoot <%= node['rvm_passenger']['root_path'] %>
+<% if ::Chef::Version.new(node['rvm_passenger']['version']) >= ::Chef::Version.new('4.0.0') %>
+PassengerDefaultRuby <%= node['rvm_passenger']['ruby_wrapper'] %>
+<% else %>
 PassengerRuby <%= node['rvm_passenger']['ruby_wrapper'] %>
+<% end %>
+
+<%= node['rvm_passenger']['apache2_config'] %>

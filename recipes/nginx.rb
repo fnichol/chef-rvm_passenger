@@ -48,17 +48,14 @@ end
 rvm_shell "build passenger_nginx_module" do
   ruby_string   node['rvm_passenger']['rvm_ruby']
   code          <<-INSTALL
-    passenger-install-nginx-module \
+    passenger-install-nginx-module _#{node['rvm_passenger']['version']}_ \
       --auto --prefix=#{nginx_install} \
       --nginx-source-dir=#{archive_cache}/nginx-#{nginx_version} \
       --extra-configure-flags='#{configure_flags}'
   INSTALL
   notifies      :restart, resources(:service => "nginx")
 
-  not_if        <<-CHECK
-    #{nginx_install}/sbin/nginx -V 2>&1 | \
-      grep "`cat /tmp/passenger_root_path`/ext/nginx"
-  CHECK
+  not_if        { `#{nginx_install}/sbin/nginx -V 2>&1`.include?("#{node['rvm_passenger']['root_path']}/ext/nginx") }
 end
 
 template "#{nginx_dir}/conf.d/passenger.conf" do
@@ -67,9 +64,4 @@ template "#{nginx_dir}/conf.d/passenger.conf" do
   group     "root"
   mode      "0644"
   notifies  :restart, resources(:service => "nginx")
-end
-
-# Oh the humanity this should not be required.
-file "/tmp/passenger_root_path" do
-  action  :delete
 end
